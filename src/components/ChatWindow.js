@@ -3,7 +3,7 @@ import { Box, makeStyles, Paper, Typography, Avatar, InputBase, IconButton, Badg
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { pink, grey } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
 import './style.css';
 
 const chatStyles = makeStyles((theme) => ({
@@ -27,14 +27,15 @@ const chatStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     borderRadius: theme.spacing(1, 1, 0, 0),
+    boxShadow: '0 9.5px 12.7px 0 rgba(0,0,0,.05)',
   },
   anchorOriginBottomRightRectangle: {
     right: 12,
     bottom: 6,
   },
   avatar: {
-    color: theme.palette.getContrastText(pink[500]),
-    backgroundColor: pink[500],
+    color: theme.palette.getContrastText(theme.palette.common.white),
+    backgroundColor: theme.palette.common.white,
     marginRight: theme.spacing(1),
   },
   titleWrapper: {
@@ -47,7 +48,7 @@ const chatStyles = makeStyles((theme) => ({
   subTitle: {
     fontSize: theme.typography.pxToRem(10),
     fontWeight: theme.typography.fontWeightRegular,
-    color: grey[500]
+    color: grey[400],
   },
   content: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -87,7 +88,9 @@ function ChatWindow({ open }) {
               vertical: 'bottom',
               horizontal: 'right',
             }}
-            classes={{ anchorOriginBottomRightRectangle: classes.anchorOriginBottomRightRectangle }}
+            classes={{
+              anchorOriginBottomRightRectangle: classes.anchorOriginBottomRightRectangle,
+            }}
           >
             <Avatar className={classes.avatar}>
               <FontAwesomeIcon icon={faRobot} />

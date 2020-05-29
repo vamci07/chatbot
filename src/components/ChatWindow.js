@@ -71,6 +71,7 @@ const chatStyles = makeStyles((theme) => ({
     flex: 1,
   },
   iconButton: {
+    marginRight: theme.spacing(1),
     padding: 10,
   },
 }));

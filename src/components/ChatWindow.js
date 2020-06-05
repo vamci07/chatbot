@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, makeStyles, Paper, Typography, Avatar, InputBase, IconButton, Badge } from '@material-ui/core';
+import { Box, makeStyles, Paper, Typography, Avatar, InputBase, IconButton } from '@material-ui/core';
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { grey } from '@material-ui/core/colors';
 import './style.css';
+import StyledBadge from './StyledBadge';
 
 const chatStyles = makeStyles((theme) => ({
   root: {
@@ -82,21 +83,18 @@ function ChatWindow({ open }) {
     <CSSTransition in={open} timeout={300} classNames="chat" unmountOnExit>
       <Paper className={classes.root}>
         <Box className={classes.header}>
-          <Badge
-            color="secondary"
+          <StyledBadge
+            overlap="circle"
             variant="dot"
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'right',
             }}
-            classes={{
-              anchorOriginBottomRightRectangle: classes.anchorOriginBottomRightRectangle,
-            }}
           >
             <Avatar className={classes.avatar}>
               <FontAwesomeIcon icon={faRobot} />
             </Avatar>
-          </Badge>
+          </StyledBadge>
           <Box className={classes.titleWrapper}>
             <Typography className={classes.title}>Bella</Typography>
             <Typography className={classes.subTitle}>Online</Typography>

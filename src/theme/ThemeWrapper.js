@@ -14,17 +14,15 @@ const GlobalStyle = createGlobalStyle`
 
 function ThemeWrapper({ children, theme }) {
   return (
-    <>
-      <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <StylesProvider injectFirst>
-          <MuiThemeProvider theme={theme}>
-            <GlobalStyle />
-            {children}
-          </MuiThemeProvider>
-        </StylesProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <StylesProvider injectFirst>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+          <GlobalStyle />
+          {children}
+        </MuiThemeProvider>
+      </StylesProvider>
+    </ThemeProvider>
   );
 }
 

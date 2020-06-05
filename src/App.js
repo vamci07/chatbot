@@ -5,7 +5,7 @@ import Landing from 'views/Landing'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = React.useMemo(() => myTheme(prefersDarkMode ? 'light' : 'dark'), [prefersDarkMode]);
+  const theme = React.useMemo(() => myTheme(prefersDarkMode ? 'dark' : 'light'), [prefersDarkMode]);
 
   return (
     <ThemeWrapper theme={theme}>

@@ -1,0 +1,38 @@
+{
+  "messages": [
+    { "id": 0, "author": "Bot", "timestamp": "06/05/2020 02:00pm", "message": "Hey there 👋. I'm AI Bot." },
+    { "id": 1, "author": "Vamshi", "timestamp": "06/05/2020 02:01pm", "message": "Hello. How are you doing?" },
+    {
+      "id": 0,
+      "author": "Bot",
+      "timestamp": "06/05/2020 02:02pm",
+      "message": "I'm doing good. What can I help you with? You can ask like 'Is my deductible met?', 'What is the costshare for hip surgery?, etc."
+    },
+    {
+      "id": 1,
+      "author": "Vamshi",
+      "timestamp": "06/05/2020 02:01pm",
+      "message": "I wanna know details about my deductible for both member and family"
+    },
+    {
+      "id": 0,
+      "author": "Bot",
+      "timestamp": "06/05/2020 02:02pm",
+      "message": "I'm doing good. What can I help you with? You can ask like 'Is my deductible met?', 'What is the costshare for hip surgery?, etc."
+    },
+    { "id": 1, "author": "Vamshi", "timestamp": "06/05/2020 02:01pm", "message": "Hello. How are you doing?" },
+    {
+      "id": 0,
+      "author": "Bot",
+      "timestamp": "06/05/2020 02:02pm",
+      "message": "I'm doing good. What can I help you with? You can ask like 'Is my deductible met?', 'What is the costshare for hip surgery?, etc."
+    },
+    { "id": 1, "author": "Vamshi", "timestamp": "06/05/2020 02:01pm", "message": "Goodbye" },
+    {
+      "id": 0,
+      "author": "Bot",
+      "timestamp": "06/05/2020 02:02pm",
+      "message": "Bye! Have a great day."
+    }
+  ]
+}

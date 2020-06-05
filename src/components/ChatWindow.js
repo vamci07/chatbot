@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Box, makeStyles, Paper, Typography, Avatar, InputBase, IconButton } from '@material-ui/core';
 import { CSSTransition } from 'react-transition-group';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { grey } from '@material-ui/core/colors';
 import './style.css';
 import StyledBadge from './StyledBadge';
+import bot from 'static/images/bot.jpg';
+import send from 'static/images/send.png';
+import messagesJson from 'utils/messages.json';
+import ChatBubble from './ChatBubble';
 
 const chatStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +23,14 @@ const chatStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   header: {
-    background: 'linear-gradient(90deg, rgba(13,71,161,1) 0%, rgba(25,118,210,1) 75%, rgba(33,150,243,1) 100%)',
-    color: theme.palette.common.white,
+    background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
     width: '100%',
     padding: theme.spacing(3),
     display: 'flex',
     alignItems: 'center',
     borderRadius: theme.spacing(1, 1, 0, 0),
-    boxShadow: '0 9.5px 12.7px 0 rgba(0,0,0,.05)',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // '0 9.5px 12.7px 0 rgba(0,0,0,.05)',
   },
   anchorOriginBottomRightRectangle: {
     right: 12,
@@ -52,9 +54,10 @@ const chatStyles = makeStyles((theme) => ({
     color: grey[400],
   },
   content: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    height: 464,
-    overflow: 'scroll',
+    backgroundColor: theme.palette.background.default,
+    height: 448,
+    padding: theme.spacing(2, 1, 0),
+    overflowY: 'scroll',
   },
   actions: {
     width: '100%',
@@ -64,20 +67,37 @@ const chatStyles = makeStyles((theme) => ({
     bottom: 0,
     borderRadius: theme.spacing(0, 0, 1, 1),
     boxShadow: 'none',
-    borderTop: `1px solid ${theme.palette.divider}`,
     height: 64,
   },
   input: {
-    marginLeft: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
     flex: 1,
   },
   iconButton: {
     marginRight: theme.spacing(1),
     padding: 10,
   },
+  bubblesContainer: {
+    width: '100%',
+    '& > *': {
+      padding: theme.spacing(1, 2),
+    },
+  },
 }));
 
 function ChatWindow({ open }) {
+  const { messages = [] } = messagesJson;
+
+  useLayoutEffect(() => {
+    const element = document.getElementById('end-of-messages');
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+    }
+  });
+
   const classes = chatStyles();
   return (
     <CSSTransition in={open} timeout={300} classNames="chat" unmountOnExit>
@@ -91,16 +111,26 @@ function ChatWindow({ open }) {
               horizontal: 'right',
             }}
           >
-            <Avatar className={classes.avatar}>
-              <FontAwesomeIcon icon={faRobot} />
-            </Avatar>
+            <Avatar className={classes.avatar} src={bot}></Avatar>
           </StyledBadge>
           <Box className={classes.titleWrapper}>
-            <Typography className={classes.title}>Bella</Typography>
+            <Typography className={classes.title}>Bot</Typography>
             <Typography className={classes.subTitle}>Online</Typography>
           </Box>
         </Box>
-        <Box className={classes.content}></Box>
+        <Box className={classes.content}>
+          {messages &&
+            messages.length &&
+            messages.map((messageItem, index) => {
+              const { id, author, timestamp, message } = messageItem;
+              return (
+                <Box className={classes.bubblesContainer}>
+                  <ChatBubble id={id} author={author} timestamp={timestamp} message={message} />
+                </Box>
+              );
+            })}
+          <Box id="end-of-messages" />
+        </Box>
         <Paper component="form" className={classes.actions}>
           <InputBase
             className={classes.input}
@@ -108,7 +138,7 @@ function ChatWindow({ open }) {
             inputProps={{ 'aria-label': 'type query to bella' }}
           />
           <IconButton color="primary" className={classes.iconButton} aria-label="query">
-            <FontAwesomeIcon icon={faPaperPlane} />
+            <img src={send} style={{ height: 24, width: 24 }} alt="send" />
           </IconButton>
         </Paper>
       </Paper>

@@ -29,8 +29,8 @@ function Landing() {
     <Box className={classes.root}>
       <Box className={classes.content}>
         <Typography variant="h4">Hello</Typography>
-        <ChatWindow open={chatOpen} />
-        <ChatFab open={chatOpen} handleChatOpen={handleChatOpen} />
+        <ChatWindow open={chatOpen} healthy={false} />
+        <ChatFab open={chatOpen} healthy={false} handleChatOpen={handleChatOpen} />
       </Box>
     </Box>
   );

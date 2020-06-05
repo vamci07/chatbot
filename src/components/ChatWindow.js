@@ -85,7 +85,7 @@ const chatStyles = makeStyles((theme) => ({
   },
 }));
 
-function ChatWindow({ open }) {
+function ChatWindow({ open, healthy = false }) {
   const { messages = [] } = messagesJson;
 
   useLayoutEffect(() => {
@@ -110,12 +110,13 @@ function ChatWindow({ open }) {
               vertical: 'bottom',
               horizontal: 'right',
             }}
+            healthy={healthy}
           >
             <Avatar className={classes.avatar} src={bot}></Avatar>
           </StyledBadge>
           <Box className={classes.titleWrapper}>
             <Typography className={classes.title}>Bot</Typography>
-            <Typography className={classes.subTitle}>Online</Typography>
+            <Typography className={classes.subTitle}>{healthy ? 'Online' : 'Offline'}</Typography>
           </Box>
         </Box>
         <Box className={classes.content}>

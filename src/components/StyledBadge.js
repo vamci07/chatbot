@@ -1,10 +1,11 @@
+import React from 'react';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 
-const StyledBadge = withStyles((theme) => ({
+const styles = (theme) => ({
   badge: {
-    backgroundColor: '#44b700',
-    color: '#44b700',
+    backgroundColor: props => props.healthy ? '#44b700' : '#f44336',
+    color: props => props.healthy ? '#44b700' : '#f44336',
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     '&::after': {
       position: 'absolute',
@@ -28,6 +29,13 @@ const StyledBadge = withStyles((theme) => ({
       opacity: 0,
     },
   },
-}))(Badge);
+});
+
+function MuiBadge(props) {
+  const { classes, healthy, ...other } = props;
+  return <Badge classes={{ badge: classes.badge }} {...other} />;
+}
+
+const StyledBadge = withStyles(styles, { withTheme: true })(MuiBadge);
 
 export default StyledBadge;

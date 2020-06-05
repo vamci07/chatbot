@@ -1,13 +1,16 @@
 import React from 'react';
-import { Fab, makeStyles } from '@material-ui/core';
+import { Fab, makeStyles, Box } from '@material-ui/core';
 import bot from 'static/images/bot.jpg';
 import close from 'static/images/close.png';
+import StyledBadge from './StyledBadge';
 
 const fabStyles = makeStyles((theme) => ({
   root: {
     position: 'fixed',
     bottom: 60,
     right: 60,
+  },
+  fab: {
     height: 60,
     width: 60,
     display: 'flex',
@@ -27,13 +30,25 @@ const fabStyles = makeStyles((theme) => ({
   },
 }));
 
-function ChatFab({ open, handleChatOpen }) {
+function ChatFab({ open, healthy = 'false', handleChatOpen }) {
   const classes = fabStyles();
   return (
-    <Fab className={classes.root} onClick={handleChatOpen}>
-      {!open && <img src={bot} style={{ height: 60, width: 60, borderRadius: '100%' }} alt="bot" />}
-      {open && <img src={close} style={{ height: 20, width: 20, borderRadius: '100%' }} alt="close" />}
-    </Fab>
+    <Box className={classes.root}>
+      <StyledBadge
+        overlap="circle"
+        variant="dot"
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        healthy={healthy}
+      >
+        <Fab className={classes.fab} onClick={handleChatOpen}>
+          {!open && <img src={bot} style={{ height: 60, width: 60, borderRadius: '100%' }} alt="bot" />}
+          {open && <img src={close} style={{ height: 20, width: 20, borderRadius: '100%' }} alt="close" />}
+        </Fab>
+      </StyledBadge>
+    </Box>
   );
 }
 

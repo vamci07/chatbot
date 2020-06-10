@@ -4,8 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
   badge: {
-    backgroundColor: props => props.healthy ? '#44b700' : '#f44336',
-    color: props => props.healthy ? '#44b700' : '#f44336',
+    backgroundColor: (props) => (props.healthy ? '#44b700' : '#f44336'),
+    color: (props) => (props.healthy ? '#44b700' : '#f44336'),
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     '&::after': {
       position: 'absolute',

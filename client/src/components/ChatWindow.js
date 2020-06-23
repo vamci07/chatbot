@@ -6,8 +6,9 @@ import './style.css';
 import StyledBadge from './StyledBadge';
 import bot from 'static/images/bot.jpg';
 import send from 'static/images/send.png';
-import messagesJson from 'utils/messages.json';
 import ChatBubble from './ChatBubble';
+import Axios from 'axios';
+import WeatherCard from './WeatherCard';
 
 const chatStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +87,53 @@ const chatStyles = makeStyles((theme) => ({
 }));
 
 function ChatWindow({ open, healthy = false }) {
-  const { messages = [] } = messagesJson;
+  const [messages, setMessages] = React.useState([
+    {
+      id: 0,
+      author: 'Bot',
+      timestamp: '06/05/2020 02:00pm',
+      message: "Hey there 👋. I'm AI Bot.",
+    },
+    /* {
+      id: 0,
+      author: 'Bot',
+      timestamp: '06/05/2020 02:00pm',
+      recipient_id: 'Vamshi',
+      message: {
+        request: { type: 'City', query: 'New York, United States of America', language: 'en', unit: 'm' },
+        location: {
+          name: 'New York',
+          country: 'United States of America',
+          region: 'New York',
+          lat: '40.714',
+          lon: '-74.006',
+          timezone_id: 'America/New_York',
+          localtime: '2020-06-23 15:15',
+          localtime_epoch: 1592925300,
+          utc_offset: '-4.0',
+        },
+        current: {
+          observation_time: '07:15 PM',
+          temperature: 29,
+          weather_code: 113,
+          weather_icons: ['https://assets.weatherstack.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png'],
+          weather_descriptions: ['Sunny'],
+          wind_speed: 0,
+          wind_degree: 174,
+          wind_dir: 'S',
+          pressure: 1009,
+          precip: 0,
+          humidity: 53,
+          cloudcover: 0,
+          feelslike: 31,
+          uv_index: 9,
+          visibility: 16,
+          is_day: 'yes',
+        },
+      },
+    }, */
+  ]);
+  const [query, setQuery] = React.useState('');
 
   useLayoutEffect(() => {
     const element = document.getElementById('end-of-messages');
@@ -98,6 +145,29 @@ function ChatWindow({ open, healthy = false }) {
     }
   });
 
+  async function weatherData(queryMessage) {
+    const { author, message } = queryMessage;
+    const { data = {} } = await Axios.post('/weather', { sender: author, message: message });
+    const responseMessage = Object.assign({
+      id: 0,
+      author: 'Bot',
+      timestamp: '06/05/2020 02:00pm',
+      message: data[0].custom,
+    });
+    await setMessages([...messages, queryMessage, responseMessage]);
+    setQuery('');
+  }
+
+  async function handleUserInput() {
+    const queryMessage = Object.assign({ id: 1, author: 'Vamshi', timestamp: '06/05/2020 02:00pm', message: query });
+    weatherData(queryMessage);
+  }
+
+  function handleInputText(event) {
+    setQuery(event.target.value);
+  }
+
+  console.log(messages);
   const classes = chatStyles();
   return (
     <CSSTransition in={open} timeout={300} classNames="chat" unmountOnExit>
@@ -124,11 +194,21 @@ function ChatWindow({ open, healthy = false }) {
             messages.length &&
             messages.map((messageItem, index) => {
               const { id, author, timestamp, message } = messageItem;
-              return (
-                <Box className={classes.bubblesContainer}>
-                  <ChatBubble id={id} author={author} timestamp={timestamp} message={message} />
-                </Box>
-              );
+              if (typeof message === 'object') {
+                return (
+                  <Box className={classes.bubblesContainer}>
+                    <WeatherCard id={id} author={author} timestamp={timestamp} message={message} />
+                  </Box>
+                );
+              }
+              if (typeof message === 'string') {
+                return (
+                  <Box className={classes.bubblesContainer}>
+                    <ChatBubble id={id} author={author} timestamp={timestamp} message={message} />
+                  </Box>
+                );
+              }
+              return null;
             })}
           <Box id="end-of-messages" />
         </Box>
@@ -137,8 +217,10 @@ function ChatWindow({ open, healthy = false }) {
             className={classes.input}
             placeholder="Type...."
             inputProps={{ 'aria-label': 'type query to bella' }}
+            value={query}
+            onChange={handleInputText}
           />
-          <IconButton color="primary" className={classes.iconButton} aria-label="query">
+          <IconButton color="primary" className={classes.iconButton} aria-label="query" onClick={handleUserInput}>
             <img src={send} style={{ height: 24, width: 24 }} alt="send" />
           </IconButton>
         </Paper>

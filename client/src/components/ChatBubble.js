@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, makeStyles, Avatar } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import bot from 'static/images/bot.jpg';
+import bot from 'static/images/M.png';
 import user from 'static/images/user.jpg';
 
 const bubbleStyles = makeStyles((theme) => ({
@@ -56,20 +56,18 @@ export default function ChatBubble({ id, author, timestamp, message }) {
     <Box className={classes.root}>
       {id === 0 && (
         <Box className={classes.avatarContainer}>
-          <Avatar src={bot} />
-          <Typography className={classes.author}>{author}</Typography>
+          <Avatar src={bot} /> <Typography className={classes.author}> {author} </Typography>
         </Box>
       )}
       <Box className={classes.bubbleContainer}>
         <Box className={classes.bubble}>
-          <Typography className={classes.message}>{message}</Typography>
+          <Typography className={classes.message}> {message} </Typography>
         </Box>
-        <Typography className={classes.author}>{timestamp}</Typography>
+        <Typography className={classes.author}> {timestamp} </Typography>
       </Box>
       {id === 1 && (
         <Box className={classes.avatarContainer}>
-          <Avatar src={user} />
-          <Typography className={classes.author}>{author}</Typography>
+          <Avatar src={user} /> <Typography className={classes.author}> {author} </Typography>
         </Box>
       )}
     </Box>

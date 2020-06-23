@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { grey } from '@material-ui/core/colors';
 import './style.css';
 import StyledBadge from './StyledBadge';
-import bot from 'static/images/bot.jpg';
+import bot from 'static/images/M.png';
 import send from 'static/images/send.png';
 import ChatBubble from './ChatBubble';
 import Axios from 'axios';

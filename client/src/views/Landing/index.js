@@ -12,7 +12,13 @@ const landingStyles = makeStyles((theme) => ({
   },
   content: {
     width: '100%',
+    padding: 24,
+  },
+  section: {
+    width: '100%',
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 }));
@@ -28,7 +34,14 @@ function Landing() {
   return (
     <Box className={classes.root}>
       <Box className={classes.content}>
-        <Typography variant="h4">Hello</Typography>
+        <Box className={classes.section}>
+          <div>
+            <Typography variant="h4">Hello</Typography>
+          </div>
+          <div>
+            <Typography variant="body1">Chatbot demo page</Typography>
+          </div>
+        </Box>
         <ChatWindow open={chatOpen} healthy={false} />
         <ChatFab open={chatOpen} healthy={false} handleChatOpen={handleChatOpen} />
       </Box>

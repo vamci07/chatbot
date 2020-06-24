@@ -1,62 +1,33 @@
 import React, { useLayoutEffect } from 'react';
-import { Box, makeStyles, Paper, Typography, Avatar, InputBase, IconButton } from '@material-ui/core';
+import { Box, makeStyles, Paper, InputBase, IconButton } from '@material-ui/core';
 import { CSSTransition } from 'react-transition-group';
-import { grey } from '@material-ui/core/colors';
-import './style.css';
-import StyledBadge from './StyledBadge';
-import bot from 'static/images/M.png';
 import send from 'static/images/send.png';
 import ChatBubble from './ChatBubble';
 import Axios from 'axios';
 import WeatherCard from './WeatherCard';
+import StockCard from './StockCard';
+import ChatHeader from './ChatHeader';
+import './style.css';
 
 const chatStyles = makeStyles((theme) => ({
   root: {
     position: 'fixed',
     bottom: 132,
     right: 60,
-    height: 600,
-    width: 360,
+    height: 640,
+    width: 384,
     borderRadius: theme.spacing(1),
     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
   },
-  header: {
-    background: theme.palette.background.paper,
-    color: theme.palette.text.primary,
-    width: '100%',
-    padding: theme.spacing(3),
-    display: 'flex',
-    alignItems: 'center',
-    borderRadius: theme.spacing(1, 1, 0, 0),
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // '0 9.5px 12.7px 0 rgba(0,0,0,.05)',
-  },
   anchorOriginBottomRightRectangle: {
     right: 12,
     bottom: 6,
   },
-  avatar: {
-    color: theme.palette.getContrastText(theme.palette.common.white),
-    backgroundColor: theme.palette.common.white,
-    marginRight: theme.spacing(1),
-  },
-  titleWrapper: {
-    marginLeft: theme.spacing(2),
-  },
-  title: {
-    fontSize: theme.typography.pxToRem(16),
-    fontWeight: theme.typography.fontWeightBold,
-  },
-  subTitle: {
-    fontSize: theme.typography.pxToRem(10),
-    fontWeight: theme.typography.fontWeightRegular,
-    color: grey[400],
-  },
   content: {
-    backgroundColor: theme.palette.background.default,
-    height: 448,
+    height: 458,
     padding: theme.spacing(2, 1, 0),
     overflowY: 'scroll',
   },
@@ -145,14 +116,14 @@ function ChatWindow({ open, healthy = false }) {
     }
   });
 
-  async function weatherData(queryMessage) {
+  async function queryRasa(queryMessage) {
     const { author, message } = queryMessage;
-    const { data = {} } = await Axios.post('/weather', { sender: author, message: message });
+    const { data = {} } = await Axios.post('/rasa', { sender: author, message: message });
     const responseMessage = Object.assign({
       id: 0,
       author: 'Bot',
       timestamp: '06/05/2020 02:00pm',
-      message: data[0].custom,
+      message: data,
     });
     await setMessages([...messages, queryMessage, responseMessage]);
     setQuery('');
@@ -160,51 +131,42 @@ function ChatWindow({ open, healthy = false }) {
 
   async function handleUserInput() {
     const queryMessage = Object.assign({ id: 1, author: 'Vamshi', timestamp: '06/05/2020 02:00pm', message: query });
-    weatherData(queryMessage);
+    queryRasa(queryMessage);
   }
 
   function handleInputText(event) {
     setQuery(event.target.value);
   }
 
-  console.log(messages);
   const classes = chatStyles();
   return (
     <CSSTransition in={open} timeout={300} classNames="chat" unmountOnExit>
-      <Paper className={classes.root}>
-        <Box className={classes.header}>
-          <StyledBadge
-            overlap="circle"
-            variant="dot"
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            healthy={healthy}
-          >
-            <Avatar className={classes.avatar} src={bot}></Avatar>
-          </StyledBadge>
-          <Box className={classes.titleWrapper}>
-            <Typography className={classes.title}>Bot</Typography>
-            <Typography className={classes.subTitle}>{healthy ? 'Online' : 'Offline'}</Typography>
-          </Box>
-        </Box>
+      <Paper className={classes.root} elevation={0}>
+        <ChatHeader healthy={healthy}></ChatHeader>
         <Box className={classes.content}>
           {messages &&
             messages.length &&
             messages.map((messageItem, index) => {
               const { id, author, timestamp, message } = messageItem;
-              if (typeof message === 'object') {
+              const { custom: { payload = undefined, data = {} } = {}, text = undefined } = message[0];
+              if (payload === 'weather') {
                 return (
                   <Box className={classes.bubblesContainer}>
-                    <WeatherCard id={id} author={author} timestamp={timestamp} message={message} />
+                    <WeatherCard id={id} author={author} timestamp={timestamp} message={data} />
                   </Box>
                 );
               }
-              if (typeof message === 'string') {
+              if (payload === 'stock') {
                 return (
                   <Box className={classes.bubblesContainer}>
-                    <ChatBubble id={id} author={author} timestamp={timestamp} message={message} />
+                    <StockCard id={id} author={author} timestamp={timestamp} message={data} />
+                  </Box>
+                );
+              }
+              if (!payload) {
+                return (
+                  <Box className={classes.bubblesContainer}>
+                    <ChatBubble id={id} author={author} timestamp={timestamp} message={text || message} />
                   </Box>
                 );
               }

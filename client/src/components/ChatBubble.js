@@ -15,7 +15,7 @@ const bubbleStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: props.id === 0 ? 'flex-end' : 'flex-start',
+    alignItems: 'center',
     '& > div': {
       marginBottom: theme.spacing(0.5),
     },
@@ -56,20 +56,22 @@ export default function ChatBubble({ id, author, timestamp, message }) {
     <Box className={classes.root}>
       {id === 0 && (
         <Box className={classes.avatarContainer}>
-          <Avatar src={bot} /> <Typography className={classes.author}> {author} </Typography>
+          <Avatar src={bot} />
         </Box>
       )}
       <Box className={classes.bubbleContainer}>
         <Box className={classes.bubble}>
           <Typography className={classes.message}> {message} </Typography>
         </Box>
-        <Typography className={classes.author}> {timestamp} </Typography>
       </Box>
       {id === 1 && (
         <Box className={classes.avatarContainer}>
-          <Avatar src={user} /> <Typography className={classes.author}> {author} </Typography>
+          <Avatar src={user} />
         </Box>
       )}
     </Box>
   );
 }
+
+// <Typography className={classes.author}> {author} </Typography>
+// <Typography className={classes.author}> {timestamp} </Typography>

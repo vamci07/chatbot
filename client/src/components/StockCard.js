@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Typography, makeStyles, Avatar } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
 import bot from 'static/images/M.png';
 import user from 'static/images/user.jpg';
 
@@ -24,13 +23,6 @@ const bubbleStyles = makeStyles((theme) => ({
       marginLeft: props.id === 1 && theme.spacing(2),
     },
   }),
-  bubble: (props) => ({
-    maxWidth: 240,
-    borderRadius: theme.spacing(2),
-    backgroundColor: props.id === 0 ? grey[300] : '#16153d',
-    color: props.id === 0 ? theme.palette.common.black : theme.palette.common.white,
-    padding: theme.spacing(0.5, 2),
-  }),
   avatarContainer: (props) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -45,9 +37,6 @@ const bubbleStyles = makeStyles((theme) => ({
   author: {
     fontSize: theme.typography.pxToRem(8),
   },
-  message: {
-    fontSize: theme.typography.pxToRem(14),
-  },
   card: {
     borderRadius: 12,
     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -56,52 +45,31 @@ const bubbleStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WeatherCard({ id, author, timestamp, message }) {
-  const { current: { temperature, feelslike, humidity } = {} } = message;
+export default function StockCard({ id, author, timestamp, message }) {
+  const { change, changePercent, companyName, latestPrice, previousClose } = message;
   const classes = bubbleStyles({ id });
   return (
     <Box className={classes.root}>
       {id === 0 && (
         <Box className={classes.avatarContainer}>
           <Avatar src={bot} />
+          <Typography className={classes.author}>{author}</Typography>
         </Box>
       )}
       <Box className={classes.bubbleContainer}>
         <div id="card" class="weather">
-          <div class="details">
-            <div class="temp">
-              {temperature}
-              <span>F</span>
-            </div>
-            {/* <div class="right">
-              <div id="date">Monday 22 August</div>
-              <div id="summary"></div>
-            </div> */}
-            <div class="sun">
-              <div class="rays"></div>
-            </div>
-            <div className="feelslike">
-              <span>Feels like</span>
-              <div class="secondary-temp">
-                {feelslike}
-                <span>F</span>
-              </div>
-            </div>
-            <div className="humidity">
-              <span>Humidity</span>
-              <div class="secondary-temp">
-                {humidity}
-                <span>%</span>
-              </div>
-            </div>
-          </div>
+          {change}
+          {changePercent}
+          {companyName}
+          {latestPrice}
+          {previousClose}
         </div>
-
         <Typography className={classes.author}>{timestamp}</Typography>
       </Box>
       {id === 1 && (
         <Box className={classes.avatarContainer}>
           <Avatar src={user} />
+          <Typography className={classes.author}>{author}</Typography>
         </Box>
       )}
     </Box>

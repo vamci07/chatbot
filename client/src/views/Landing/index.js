@@ -24,7 +24,7 @@ const landingStyles = makeStyles((theme) => ({
 }));
 
 function Landing() {
-  const [chatOpen, setChatOpen] = React.useState(true);
+  const [chatOpen, setChatOpen] = React.useState(false);
 
   function handleChatOpen() {
     setChatOpen(!chatOpen);

@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.7"
   },
   "devDependencies": {
     "rimraf": "^3.0.2"

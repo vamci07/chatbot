@@ -14,7 +14,7 @@
     "preinstall": "concurrently \"cd ./client && yarn\" \"cd ./server && yarn\""
   },
   "dependencies": {
-    "concurrently": "^5.2.0",
+    "concurrently": "^6.0.1",
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
